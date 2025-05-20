@@ -6,14 +6,14 @@ import {
   integer,
   json,
   date,
+  pgSchema,
 } from "drizzle-orm/pg-core";
 import { createId } from "../utils";
 import { MessageReference } from "discord.js";
 
+export const frontendSchema = pgSchema("frontend");
 
-// Auth + Stripe
-
-export const user = pgTable("user", {
+export const user = frontendSchema.table("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
@@ -28,7 +28,7 @@ export const user = pgTable("user", {
 export type User = typeof user.$inferSelect;
 export type UserInsert = typeof user.$inferInsert;
 
-export const session = pgTable("session", {
+export const session = frontendSchema.table("session", {
   id: text("id").primaryKey(),
   expiresAt: timestamp("expires_at").notNull(),
   token: text("token").notNull().unique(),
@@ -44,7 +44,7 @@ export const session = pgTable("session", {
 export type Session = typeof session.$inferSelect;
 export type SessionInsert = typeof session.$inferInsert;
 
-export const account = pgTable("account", {
+export const account = frontendSchema.table("account", {
   id: text("id").primaryKey(),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
@@ -62,7 +62,7 @@ export const account = pgTable("account", {
   updatedAt: timestamp("updated_at").notNull(),
 });
 
-export const verification = pgTable("verification", {
+export const verification = frontendSchema.table("verification", {
   id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
@@ -71,7 +71,7 @@ export const verification = pgTable("verification", {
   updatedAt: timestamp("updated_at"),
 });
 
-export const subscription = pgTable("subscription", {
+export const subscription = frontendSchema.table("subscription", {
   id: text("id").primaryKey(),
   plan: text("plan").notNull(),
   referenceId: text("reference_id").notNull(),
