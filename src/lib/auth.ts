@@ -64,14 +64,15 @@ export const auth = betterAuth({
         const adminGuilds = guilds?.filter(
           (f) => (parseInt(f.permissions) & 0x20) == 0x20
         );
-
+        
+        console.log("User authenticated:", profile);
         return {
           user: {
             id: profile.id,
             name: profile.global_name || profile.username || "",
             email: profile.email,
             emailVerified: profile.verified,
-            image: profile.image_url,
+            image: profile.avatar,
             guilds: JSON.stringify(adminGuilds),
           },
           data: profile,

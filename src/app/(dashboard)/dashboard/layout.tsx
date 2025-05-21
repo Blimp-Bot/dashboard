@@ -65,8 +65,6 @@ export default function DashboardLayout({
             ? guildData.map((g) => (typeof g === "string" ? g : g.id))
             : [];
 
-          console.log("Guild IDs to send:", guildIds);
-
           // Only proceed if we have IDs
           if (guildIds.length > 0) {
             mutateAsync(guildIds)
@@ -125,11 +123,12 @@ export default function DashboardLayout({
   });
 
   if (showSpinner) return <Loader />;
-
+  
   if (!effectiveSession) return <ForceHome />;
 
   const displayUser = user || (sessionData?.user ? sessionData.user : null);
-
+  // Log user data to help debug
+  
   return (
     <>
       <Toaster />
@@ -144,7 +143,7 @@ export default function DashboardLayout({
               </span>
               <Avatar className="h-8 w-8">
                 <AvatarImage
-                  src={sessionData?.user.image || undefined}
+                  src={`https://cdn.discordapp.com/avatars/${displayUser.user_id}/${displayUser.image}.png?size=1024`}
                   alt={displayUser.name || "User"}
                 />
                 <AvatarFallback className="text-xs">
@@ -163,3 +162,7 @@ export default function DashboardLayout({
 }
 
 // This file needs to have the user avatar component fixed, but I'm having no luck with it.
+// This partially works, but displayUser.user_id does not function 
+// (still learning how this all works but under the assumption tbh that the user id is in the account schema) 
+// (Using .id for the schema that is used for image doesn't work as that's the DB entry id lol)
+// Example Log: GET https://cdn.discordapp.com/avatars/undefined/73893adc6c290536ba70914fa7fa0a65.png?size=1024

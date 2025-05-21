@@ -18,7 +18,7 @@ export const user = frontendSchema.table("user", {
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").notNull(),
-  image: text("image"),
+  image: text("image").notNull(),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
   stripeCustomerId: text("stripe_customer_id"),
@@ -61,6 +61,8 @@ export const account = frontendSchema.table("account", {
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
 });
+
+export type Account = typeof account.$inferSelect;
 
 export const verification = frontendSchema.table("verification", {
   id: text("id").primaryKey(),
