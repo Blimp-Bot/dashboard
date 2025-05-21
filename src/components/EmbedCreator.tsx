@@ -1,4 +1,4 @@
-import config from "@/backend/config";
+import config from "@/config";
 import { APIEmbed, APIEmbedAuthor } from "discord.js";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Input } from "./ui/input";
