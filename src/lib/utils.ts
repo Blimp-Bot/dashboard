@@ -120,7 +120,7 @@ export function sortCommandsByStatus(
 
 export const createId = (length: number = 40) => {
   let str = "";
-  let chars =
+  const chars =
     "1234567890QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm---";
   for (let i = 0; i < length; i++) {
     str += chars[Math.floor(Math.random() * chars.length)];

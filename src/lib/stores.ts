@@ -1,6 +1,11 @@
 import { Guild } from "discord.js";
 import { create } from "zustand";
-import { Session, User } from "./auth/client";
+import { Session, User as AuthUser } from "./auth/client";
+
+export type User = AuthUser & {
+  discordId?: string | null;
+  guilds: string;
+};
 
 export const useGuildStore = create<{
   guild: Guild | null;

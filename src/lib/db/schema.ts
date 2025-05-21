@@ -23,6 +23,7 @@ export const user = frontendSchema.table("user", {
   updatedAt: timestamp("updated_at").notNull(),
   stripeCustomerId: text("stripe_customer_id"),
   guilds: text("guilds").notNull(),
+  discordId: text("discord_id").notNull().unique(),
 });
 
 export type User = typeof user.$inferSelect;

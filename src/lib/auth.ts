@@ -26,7 +26,11 @@ export const auth = betterAuth({
     additionalFields: {
       guilds: {
         type: "string",
-        defaultValue: [],
+        defaultValue: "[]",
+        required: true,
+      },
+      discordId: {
+        type: "string",
         required: true,
       },
     },
@@ -45,9 +49,19 @@ export const auth = betterAuth({
             },
           }
         );
+
         if (error || !profile) {
+          console.error("Auth.ts: Failed to fetch Discord profile:", error);
           return {
-            user: { id: "", emailVerified: false },
+            user: {
+              id: "",
+              emailVerified: false,
+              name: "",
+              email: "",
+              image: "",
+              guilds: "[]",
+              discordId: "",
+            },
             data: {},
           };
         }
@@ -64,17 +78,19 @@ export const auth = betterAuth({
         const adminGuilds = guilds?.filter(
           (f) => (parseInt(f.permissions) & 0x20) == 0x20
         );
-        
-        console.log("User authenticated:", profile);
+
+        const userToReturn = {
+          id: profile.id,
+          name: profile.global_name || profile.username || "",
+          email: profile.email,
+          emailVerified: profile.verified,
+          image: profile.avatar || "",
+          guilds: JSON.stringify(adminGuilds || []),
+          discordId: profile.id,
+        };
+
         return {
-          user: {
-            id: profile.id,
-            name: profile.global_name || profile.username || "",
-            email: profile.email,
-            emailVerified: profile.verified,
-            image: profile.avatar,
-            guilds: JSON.stringify(adminGuilds),
-          },
+          user: userToReturn,
           data: profile,
         };
       },
@@ -83,7 +99,7 @@ export const auth = betterAuth({
 
   session: {
     cookieCache: {
-      enabled: true,
+      enabled: false,
       maxAge: 5 * 60,
     },
   },

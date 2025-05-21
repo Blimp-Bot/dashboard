@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "db:all": "bunx drizzle-kit generate && bunx drizzle-kit migrate && bunx drizzle-kit push && bunx drizzle-kit pull",
-    "lint": "next lint",
-    "bot": "bun run ./backend/index.ts"
+  "lint:check": "next lint",
+  "lint:fix": "next lint --fix",
+  "bot": "bun run ./backend/index.ts"
   },
   "overrides": {
     "better-auth": "1.2.7"
@@ -80,6 +81,8 @@
     "@types/react-dom": "^19.1.4",
     "bun": "^1.2.13",
     "drizzle-kit": "^0.31.1",
+    "eslint": "^9.27.0",
+    "eslint-config-next": "15.3.2",
     "tailwindcss": "^4.1.6",
     "tw-animate-css": "^1.2.9",
     "typescript": "^5.8.3"

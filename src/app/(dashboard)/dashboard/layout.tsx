@@ -56,16 +56,12 @@ export default function DashboardLayout({
       if (sessionData.user && !user) {
         setUser(sessionData.user);
         try {
-          // Parse guild data from session
           const guildData = JSON.parse(sessionData.user.guilds);
-          console.log("Parsed guild data:", guildData);
 
-          // Extract just the IDs regardless of format
           const guildIds = Array.isArray(guildData)
             ? guildData.map((g) => (typeof g === "string" ? g : g.id))
             : [];
 
-          // Only proceed if we have IDs
           if (guildIds.length > 0) {
             mutateAsync(guildIds)
               .then((r) => {
@@ -93,7 +89,7 @@ export default function DashboardLayout({
     } else if (session) {
       setLoading(false);
     }
-  }, [sessionData, session, user, setSession, setUser]);
+  }, [sessionData, session, user, setSession, setUser, guilds, mutateAsync, setGuilds]);
 
   //   React.useEffect(() => {
   //     if (!guilds) {
@@ -127,8 +123,7 @@ export default function DashboardLayout({
   if (!effectiveSession) return <ForceHome />;
 
   const displayUser = user || (sessionData?.user ? sessionData.user : null);
-  // Log user data to help debug
-  
+
   return (
     <>
       <Toaster />
@@ -143,7 +138,7 @@ export default function DashboardLayout({
               </span>
               <Avatar className="h-8 w-8">
                 <AvatarImage
-                  src={`https://cdn.discordapp.com/avatars/${displayUser.user_id}/${displayUser.image}.png?size=1024`}
+                  src={`https://cdn.discordapp.com/avatars/${displayUser.discordId}/${displayUser.image}.png?size=1024`}
                   alt={displayUser.name || "User"}
                 />
                 <AvatarFallback className="text-xs">
@@ -166,3 +161,5 @@ export default function DashboardLayout({
 // (still learning how this all works but under the assumption tbh that the user id is in the account schema) 
 // (Using .id for the schema that is used for image doesn't work as that's the DB entry id lol)
 // Example Log: GET https://cdn.discordapp.com/avatars/undefined/73893adc6c290536ba70914fa7fa0a65.png?size=1024
+
+// Avatar is now fetched, not the best code though so needs cleaning up (along with investigating schema updates)
